@@ -11,7 +11,7 @@ from kivy.uix.label import Label
 from kivy.uix.boxlayout import BoxLayout
 
 connection_string = (
-    'postgres://#######################333_hVXBc4ylHJbSamWhhib4j@ella.db.elephantsql.com/msojsqyh') 
+    'postgres://msojsqyh:xBl-Ab3tNu_hVXBc4ylHJbSamWhhib4j@ella.db.elephantsql.com/msojsqyh') 
 
 box = BoxLayout(orientation='vertical')
 box.add_widget(Label(text='здесь должен быть такой звук "ту-дум"', font_size=45))
@@ -25,7 +25,7 @@ class MainMenu(Screen):
 
 
 class AddScreen(Screen):
-
+    # for adding data in inclusion table"""
     def btn_add_press(self):  # this func work with text from textinput and spinner
         if self.ids.parent_number.text != '' or self.ids.child_number.text !='':
             self.detail = self.ids.parent_number.text, self.ids.parent_name.text, self.ids.child_number.text, \
@@ -39,19 +39,12 @@ class AddScreen(Screen):
             insert_in_sent_table = '''INSERT INTO inclusion(parent_number, parent_name, child_number, child_name, quantity) 
                                       VALUES(%s, %s, %s, %s, %s) '''
             cur.execute(insert_in_sent_table, rows, )
-            # cur.execute("INSERT INTO sent VALUES(%s, %s, %s, datetime.datetime.now(), %s, %s)", rows)
-            # sql requests write here ^ to add one string to table
-
-            #cur.execute("SELECT * FROM inclusion WHERE parent_number=self.ids.parent_number")  # number_det/name_det/note
-
-            #all_data = cur.fetchall()
             con.commit()
             self.update_lbl_add.text = str('Последняя деталь: ' + str(self.ids.parent_number.text) + ' ' +
                                             str(self.ids.parent_name.text) + ' ' + str(self.ids.child_number.text) +
                                             ' ' + str(self.ids.child_name.text))
 
             self.ids.parent_number.text = ''
-            #self.ids.parent_name.text = ''
             self.ids.child_number.text = ''
 
         else:
@@ -63,6 +56,7 @@ class AddScreen(Screen):
 
 
 class TableAllWindow(Screen):
+    """ main screen with common table consists of 1 textview string and some buttons for see info  """
     def __init__(self, **kw):
         super().__init__(**kw)
         self.con = None
@@ -97,7 +91,6 @@ class TableAllWindow(Screen):
         return layout
 
     def on_enter(self):
-        # self.ids.all_table_layout.remove_widget(self.data_tables)
         self.add_all_table()
 
     def remove_table(self):
@@ -105,6 +98,7 @@ class TableAllWindow(Screen):
 
 
 class TableComWindow(Screen):
+    """ for work with common table of parts """
     def __init__(self, **kw):
         super().__init__(**kw)
         self.data_table_arrive = None
@@ -142,12 +136,11 @@ class TableComWindow(Screen):
         self.add_com_table()
         
     def remove_tables(self):
-
         self.ids.com_layout.remove_widget(self.data_tables_sent)
 
 
 class TableUnitWindow(Screen):
-
+    """ for looking child units that make up parent details """
     def __init__(self, **kw):
         super().__init__(**kw)
         self.cur = None
@@ -188,6 +181,7 @@ class TableUnitWindow(Screen):
 
 
 class DeleteString(Screen):
+    """ for removing data per strings from inclusion table """
     def __init__(self, **kw):
         super().__init__(**kw)
         self.con = None
@@ -229,7 +223,6 @@ class DeleteString(Screen):
         return self.q
 
     def on_enter(self):
-        # self.ids.all_table_layout.remove_widget(self.data_tables)
         self.delete_string_table()
 
     def remove_table(self):
@@ -253,7 +246,6 @@ class DeleteString(Screen):
         btn_close.bind(on_press=messege_done.dismiss)
 
         messege_done.open()
-        # print("done!")
 
 
 class CommonApp(MDApp):
